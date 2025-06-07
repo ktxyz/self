@@ -1,70 +1,16 @@
 import os
 import re
 from pathlib import Path
+from markdown import markdown
 
 def convert_markdown_to_html(markdown_content):
     """Convert markdown content to HTML while preserving formatting."""
     html = markdown_content
     
-    # Convert headers
-    html = re.sub(r'^### (.+)$', r'<h3>\1</h3>', html, flags=re.MULTILINE)
-    html = re.sub(r'^## (.+)$', r'<h2>\1</h2>', html, flags=re.MULTILINE)
-    html = re.sub(r'^# (.+)$', r'<h1>\1</h1>', html, flags=re.MULTILINE)
-    
-    # Convert bold text
-    html = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', html)
-    
-    # Convert italic text
-    html = re.sub(r'\*(.+?)\*', r'<em>\1</em>', html)
-    
-    # Convert links [text](url)
-    html = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2">\1</a>', html)
-    
-    # Convert images ![alt](src)
-    html = re.sub(r'!\[([^\]]*)\]\(([^)]+)\)', r'<img src="\2" alt="\1" />', html)
-    
-    # Convert unordered lists
-    lines = html.split('\n')
-    in_list = False
-    result_lines = []
-    
-    for line in lines:
-        if line.strip().startswith('- '):
-            if not in_list:
-                result_lines.append('<ul>')
-                in_list = True
-            item_content = line.strip()[2:]  # Remove '- '
-            result_lines.append(f'    <li>{item_content}</li>')
-        else:
-            if in_list:
-                result_lines.append('</ul>')
-                in_list = False
-            result_lines.append(line)
-    
-    if in_list:
-        result_lines.append('</ul>')
-    
-    html = '\n'.join(result_lines)
-    
-    # Convert horizontal rules
-    html = re.sub(r'^---$', r'<hr>', html, flags=re.MULTILINE)
-    
-    # Convert line breaks to <br> for single line breaks, preserve double line breaks as paragraphs
-    lines = html.split('\n')
-    processed_lines = []
-    
-    for i, line in enumerate(lines):
-        processed_lines.append(line)
-        # Add <br> for single line breaks that aren't followed by empty lines or special elements
-        if (i < len(lines) - 1 and 
-            line.strip() != '' and 
-            lines[i + 1].strip() != '' and
-            not line.strip().startswith('<') and
-            not lines[i + 1].strip().startswith('<') and
-            not line.strip().startswith('#')):
-            processed_lines.append('<br>')
-    
-    return '\n'.join(processed_lines)
+    # Convert markdown to HTML using the markdown library
+    html = markdown(html, extensions=['fenced_code', 'tables', 'toc'])
+
+    return html
 
 def create_html_template(title, content):
     """Create a complete HTML document with minimal styling."""
