@@ -84,8 +84,8 @@ Seems simple enough.
 
 ### APK loaded in the software
 
-![img01](/_assets/img/2022/re/img-01.png)
-![img02](/_assets/img/2022/re/img-02.png)
+![img01](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-01.png)
+![img02](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-02.png)
 
 Those screens at the beginning look very intimidating. I had zero experience with any Android development. But I
 just did the first thing that popped in my head – looked around some random files. The one thing I knew is that
@@ -99,7 +99,7 @@ folder, and the rest are just 3rd party libraries.
 
 After some time I finally got something interesting:
 
-![img03](/_assets/img/2022/re/img-03.png)
+![img03](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-03.png)
 
 Now I know the API URL. First step forward has been made. No more could I turn back. I felt blood.
 
@@ -118,7 +118,7 @@ With this list in mind I proceeded to the next stage. I created a few fake accou
 emulator inspected what data is being sent and received. Fortunately for me they logged all the data received so
 I didn't have to learn how to use [Wireshark](https://www.wireshark.org/).
 
-![img04](/_assets/img/2022/re/img-04.png)
+![img04](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-04.png)
 
 I cross-referenced it with functions in selected files and was able to create an overview of how the
 API works:
@@ -137,14 +137,14 @@ API works:
 4. QR code generation is `/java/com/cityfit/mobile/utils/QRUtilsKT`. I was unable to read it from the Smali code
    itself, so I opened it in bytecodeviewer:
 
-![img05](/_assets/img/2022/re/img-05.png)
+![img05](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-05.png)
 
 I had to fiddle around and see which decompiler gave the best result, but in the end I was able to decipher
 that it simply concatenates the access level with the divided timestamp [HmacSHA1-ed](https://en.wikipedia.org/wiki/HMAC)
 using the token. I quickly recreated it in some mockup code and tested if I produce the same values as the
 client. And I did.
 
-![img06](/_assets/img/2022/re/img-06.png)
+![img06](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-06.png)
 
 5. I mocked the API requests in Postman. I couldn't test the QR generation nor validity, but at least I was
    sure that authentication and registration work as intended. (And that accounts can't be registered on
@@ -162,7 +162,7 @@ client. And I did.
 
 ### My horrible app
 
-![img07](/_assets/img/2022/re/img-07.png)
+![img07](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-07.png)
 
 ---
 
@@ -175,20 +175,20 @@ I got into the building and pulled out my app, with a brand new, single-day plan
 scanner thingy, placed my phone and... almost cried. Even if my app is correct and generates good QRs it won't
 work. Why?
 
-![img08](/_assets/img/2022/re/img-08.png)
+![img08](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-08.png)
 
 Because of the f\*cking scanner itself. It's too short. How could I have not thought about it. I mean looking at
 the official client we can clearly see that the QR is placed at the top of the screen so that it gets read by the
 shallow scanner.
 
-![img09](/_assets/img/2022/re/img-09.png)
+![img09](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-09.png)
 
 So I'm standing there, ready to go back home (since I couldn't enter with normal client, because I got my main
 account disabled by accident XD). But then, in the time of the greatest despair I got hit with the greatest idea I
 had in this entire project. I used my phone's app *cleaning* animation to make the QR code smaller!!! And IT
 F\*CKING WORKED.
 
-![img10](/_assets/img/2022/re/img-10.png)
+![img10](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-10.png)
 
 I was so excited I recorded myself leaving if you want some video proof ([YT link](https://youtu.be/stvJvkpCl58) if you prefer that). The beeping at the end is not because of my app, I just
 left my bag a little too close to the capsule's doors I think.

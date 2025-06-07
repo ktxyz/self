@@ -112,8 +112,8 @@ as follows:</p>
 <hr />
 <h2 id="3-reading-code-that-is-not-available-for-reading">3. Reading code that is not available for reading</h2>
 <h3 id="apk-loaded-in-the-software">APK loaded in the software</h3>
-<p><img alt="img01" src="/_assets/img/2022/re/img-01.png" />
-<img alt="img02" src="/_assets/img/2022/re/img-02.png" /></p>
+<p><img alt="img01" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-01.png" />
+<img alt="img02" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-02.png" /></p>
 <p>Those screens at the beginning look very intimidating. I had zero experience with any Android development. But I
 just did the first thing that popped in my head – looked around some random files. The one thing I knew is that
 their code is inside:</p>
@@ -121,7 +121,7 @@ their code is inside:</p>
 </code></pre>
 <p>folder, and the rest are just 3rd party libraries.</p>
 <p>After some time I finally got something interesting:</p>
-<p><img alt="img03" src="/_assets/img/2022/re/img-03.png" /></p>
+<p><img alt="img03" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-03.png" /></p>
 <p>Now I know the API URL. First step forward has been made. No more could I turn back. I felt blood.</p>
 <p>Motivated, I dug around for a few hours (like 3 or 4. this whole part of deciphering code was done between
 11PM and 4AM) and had a list of interesting files:</p>
@@ -134,7 +134,7 @@ their code is inside:</p>
 <p>With this list in mind I proceeded to the next stage. I created a few fake accounts and using logcat and device
 emulator inspected what data is being sent and received. Fortunately for me they logged all the data received so
 I didn't have to learn how to use <a href="https://www.wireshark.org/">Wireshark</a>.</p>
-<p><img alt="img04" src="/_assets/img/2022/re/img-04.png" /></p>
+<p><img alt="img04" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-04.png" /></p>
 <p>I cross-referenced it with functions in selected files and was able to create an overview of how the
 API works:</p>
 <ol>
@@ -152,12 +152,12 @@ API works:</p>
 <li>QR code generation is <code>/java/com/cityfit/mobile/utils/QRUtilsKT</code>. I was unable to read it from the Smali code
    itself, so I opened it in bytecodeviewer:</li>
 </ol>
-<p><img alt="img05" src="/_assets/img/2022/re/img-05.png" /></p>
+<p><img alt="img05" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-05.png" /></p>
 <p>I had to fiddle around and see which decompiler gave the best result, but in the end I was able to decipher
 that it simply concatenates the access level with the divided timestamp <a href="https://en.wikipedia.org/wiki/HMAC">HmacSHA1-ed</a>
 using the token. I quickly recreated it in some mockup code and tested if I produce the same values as the
 client. And I did.</p>
-<p><img alt="img06" src="/_assets/img/2022/re/img-06.png" /></p>
+<p><img alt="img06" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-06.png" /></p>
 <ol>
 <li>I mocked the API requests in Postman. I couldn't test the QR generation nor validity, but at least I was
    sure that authentication and registration work as intended. (And that accounts can't be registered on
@@ -174,7 +174,7 @@ client. And I did.</p>
    often for some reason.</li>
 </ol>
 <h3 id="my-horrible-app">My horrible app</h3>
-<p><img alt="img07" src="/_assets/img/2022/re/img-07.png" /></p>
+<p><img alt="img07" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-07.png" /></p>
 <hr />
 <h2 id="4-the-physical-test">4. The physical test</h2>
 <p>And now the most exciting part. I had to go and test it myself at their location. I was pretty nervous but
@@ -182,16 +182,16 @@ hopeful. I packed my usual gym bag and headed out.</p>
 <p>I got into the building and pulled out my app, with a brand new, single-day plan account. I walked up to the
 scanner thingy, placed my phone and... almost cried. Even if my app is correct and generates good QRs it won't
 work. Why?</p>
-<p><img alt="img08" src="/_assets/img/2022/re/img-08.png" /></p>
+<p><img alt="img08" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-08.png" /></p>
 <p>Because of the f*cking scanner itself. It's too short. How could I have not thought about it. I mean looking at
 the official client we can clearly see that the QR is placed at the top of the screen so that it gets read by the
 shallow scanner.</p>
-<p><img alt="img09" src="/_assets/img/2022/re/img-09.png" /></p>
+<p><img alt="img09" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-09.png" /></p>
 <p>So I'm standing there, ready to go back home (since I couldn't enter with normal client, because I got my main
 account disabled by accident XD). But then, in the time of the greatest despair I got hit with the greatest idea I
 had in this entire project. I used my phone's app <em>cleaning</em> animation to make the QR code smaller!!! And IT
 F*CKING WORKED.</p>
-<p><img alt="img10" src="/_assets/img/2022/re/img-10.png" /></p>
+<p><img alt="img10" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-10.png" /></p>
 <p>I was so excited I recorded myself leaving if you want some video proof (<a href="https://youtu.be/stvJvkpCl58">YT link</a> if you prefer that). The beeping at the end is not because of my app, I just
 left my bag a little too close to the capsule's doors I think.</p>
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/stvJvkpCl58?si=pvHJf274nsVukDZZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
