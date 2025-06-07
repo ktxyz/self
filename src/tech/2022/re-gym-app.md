@@ -177,7 +177,7 @@ work. Why?
 
 ![img08](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-08.png)
 
-Because of the f\*cking scanner itself. It's too short. How could I have not thought about it. I mean looking at
+Because of the fucking scanner itself. It's too short. How could I have not thought about it. I mean looking at
 the official client we can clearly see that the QR is placed at the top of the screen so that it gets read by the
 shallow scanner.
 
@@ -186,7 +186,7 @@ shallow scanner.
 So I'm standing there, ready to go back home (since I couldn't enter with normal client, because I got my main
 account disabled by accident XD). But then, in the time of the greatest despair I got hit with the greatest idea I
 had in this entire project. I used my phone's app *cleaning* animation to make the QR code smaller!!! And IT
-F\*CKING WORKED.
+FUCKING WORKED.
 
 ![img10](https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-10.png)
 
@@ -207,7 +207,7 @@ gym I proved that the app did not in fact need the higher API requirement), lead
 forced to dive into an unknown app and essentially reverse-engineer how it works. That led to me creating my own
 app which I think can be used to share a gym membership. Either because of laziness or some weird higher-up
 decision developers created a well-known situation – they FORCED someone to break their system. And I do not want
-to have to do that. I want my friend to be able to visit the f\*cking gym with his 5.0 Android phone.
+to have to do that. I want my friend to be able to visit the fucking gym with his 5.0 Android phone.
 
 If this somehow gets to someone connected with the gym or the app, they will probably try to mitigate it,
 unfortunately for me and my friend. Fortunately for me, there isn't much that they can do, except for swapping
