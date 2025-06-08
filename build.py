@@ -1,138 +1,87 @@
-import os
 import re
+import sys
 from pathlib import Path
 from markdown import markdown
+from jinja2 import Template, Environment, FileSystemLoader
 
-def convert_markdown_to_html(markdown_content):
-    """Convert markdown content to HTML while preserving formatting."""
-    html = markdown_content
-    
-    # Convert markdown to HTML using the markdown library
-    html = markdown(html, extensions=['fenced_code', 'tables', 'toc'])
 
-    return html
+class Page:
+    def __init__(self, title, slug, content):
+        self.title = title
+        self.slug = slug
+        self.content = content
 
-def create_html_template(title, content):
-    """Create a complete HTML document with minimal styling."""
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title}</title>
-    <style>
-        body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #333;
-        }}
-        a {{
-            color: #0066cc;
-            text-decoration: none;
-        }}
-        a:hover {{
-            text-decoration: underline;
-        }}
-        h1, h2, h3 {{
-            margin-top: 30px;
-            margin-bottom: 10px;
-        }}
-        h1 {{
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }}
-        hr {{
-            border: none;
-            border-top: 1px solid #eee;
-            margin: 30px 0;
-        }}
-        ul {{
-            padding-left: 20px;
-        }}
-        li {{
-            margin-bottom: 5px;
-        }}
-        img {{
-            max-width: 100%;
-            height: auto;
-        }}
-    </style>
-</head>
-<body>
-{content}
-</body>
-</html>"""
+    def __repr__(self):
+        return f"Page(title={self.title}, slug={self.slug})"
 
-def get_page_title(file_path, content):
-    """Extract page title from markdown content or filename."""
-    # Try to find the first H1 header
-    h1_match = re.search(r'^# (.+)$', content, re.MULTILINE)
-    if h1_match:
-        return h1_match.group(1).strip()
-    
-    # Fall back to filename (without extension)
-    return file_path.stem.replace('-', ' ').replace('_', ' ').title()
 
-def build_site():
-    """Build the static site."""
-    src_dir = Path('src')
-    dist_dir = Path('docs')
+def load_header(header_path):
+    header_file = Path(header_path)
+    if not header_file.exists():
+        raise FileNotFoundError(f"Header file {header_path} does not exist.")
     
-    # Create dist directory if it doesn't exist
-    dist_dir.mkdir(exist_ok=True)
+    with open(header_file, "r", encoding="utf-8") as file:
+        return markdown(file.read())
+
+
+def load_footer(footer_path):
+    footer_file = Path(footer_path)
+    if not footer_file.exists():
+        raise FileNotFoundError(f"Footer file {footer_path} does not exist.")
     
-    # Process all markdown files
-    markdown_files = list(src_dir.rglob('*.md'))
-    
-    if not markdown_files:
-        print("No markdown files found in src directory")
-        return
-    
-    for md_file in markdown_files:
-        print(f"Processing {md_file}")
+    with open(footer_file, "r", encoding="utf-8") as file:
+        return markdown(file.read())
+
+
+def parse_pages(source_dir):
+    # In src directory, look for files with .md extension, recursively
+    source_path = Path(source_dir)
+    if not source_path.exists() or not source_path.is_dir():
+        raise FileNotFoundError(f"Source directory {source_dir} does not exist or is not a directory.")
+
+    pages = []
+    for md_file in source_path.rglob("*.md"):
+        with open(md_file, "r", encoding="utf-8") as file:
+            content = file.read()
         
-        # Read markdown content
-        with open(md_file, 'r', encoding='utf-8') as f:
-            markdown_content = f.read()
-        
-        # Convert to HTML
-        html_content = convert_markdown_to_html(markdown_content)
-        
-        # Get page title
-        page_title = get_page_title(md_file, markdown_content)
-        
-        # Create complete HTML document
-        full_html = create_html_template(page_title, html_content)
-        
-        # Calculate output path (replace .md with .html, maintain directory structure)
-        relative_path = md_file.relative_to(src_dir)
-        output_file = dist_dir / relative_path.with_suffix('.html')
-        
-        # Create output directory if it doesn't exist
-        output_file.parent.mkdir(parents=True, exist_ok=True)
-        
-        # Write HTML file
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(full_html)
-        
-        print(f"Generated {output_file}")
-    
-    # Copy any other assets (images, CSS, etc.)
-    for file_path in src_dir.rglob('*'):
-        if file_path.is_file() and not file_path.name.endswith('.md'):
-            relative_path = file_path.relative_to(src_dir)
-            output_path = dist_dir / relative_path
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            
-            # Copy file
-            import shutil
-            shutil.copy2(file_path, output_path)
-            print(f"Copied {file_path} -> {output_path}")
-    
-    print("Build complete!")
+        # Extract title from the first line
+        title_match = re.match(r"#\s*(.*)", content)
+        if title_match:
+            title = title_match.group(1).strip()
+        else:
+            title = md_file.stem.replace("_", " ").title()
+
+        # Slug is relative_path + the file name without extension
+        slug = md_file.relative_to(source_path).with_suffix("").as_posix()
+
+        print(f"Processing {md_file} -> Title: {title}, Slug: {slug}")
+        pages.append(Page(title=title, slug=slug, content=content))
+
+    return pages
+
+
+def load_template(template_path, template_name):
+    env = Environment(loader=FileSystemLoader(template_path))
+    return env.get_template(template_name)
+
 
 if __name__ == "__main__":
-    build_site() 
+    pages = parse_pages("src")
+    header = load_header("templates/header.md")
+    footer = load_footer("templates/footer.md")
+    template = load_template("templates", "base.html")
+
+    print("Rendering pages...")
+    output_dir = Path("docs")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for page in pages:
+        content = markdown(page.content, extensions=['fenced_code', 'tables'])
+        if page.slug == "index":
+            rendered = template.render(page_title=page.title, content=content, header=header, footer=footer, slug=page.slug, lang="en")
+        else:
+            rendered = template.render(page_title=page.title, content=content, header=header, footer=footer, slug=page.slug, site_title="Kamil Tokarski", lang="en")
+        print(f"Rendering {page.slug}...")
+        output_dir.mkdir(parents=True, exist_ok=True)
+        output_file = output_dir / f"{page.slug}.html"
+        with open(output_file, "w", encoding="utf-8") as file:
+            file.write(rendered)

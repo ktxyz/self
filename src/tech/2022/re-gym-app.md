@@ -1,9 +1,4 @@
-[Home](/) | [Tech](/tech) | [Gamedev](/gamedev) | [Fitness](/fitness)
-
----
-
 # Local gym forced me to RE their app
-
 ## or: How to roll-out your own version of an API client in a few simple steps
 
 ### BEWARE

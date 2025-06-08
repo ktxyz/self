@@ -3,67 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Local gym forced me to RE their app</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #333;
-        }
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        h1, h2, h3 {
-            margin-top: 30px;
-            margin-bottom: 10px;
-        }
-        h1 {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        hr {
-            border: none;
-            border-top: 1px solid #eee;
-            margin: 30px 0;
-        }
-        ul {
-            padding-left: 20px;
-        }
-        li {
-            margin-bottom: 5px;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+
+    <title>Kamil Tokarski - Local gym forced me to RE their app</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ktxyz/self/docs/_assets/css/style.css">
+    <!-- <link rel="stylesheet" href="/_assets/css/style.css"> -->
 </head>
 <body>
-<p><a href="/">Home</a> | <a href="/tech">Tech</a> | <a href="/gamedev">Gamedev</a> | <a href="/fitness">Fitness</a></p>
+    <p><a href="/">Home</a> | <a href="/tech">Tech</a> | <a href="/gamedev">Gamedev</a> | <a href="/fitness">Fitness</a></p>
 <hr />
-<h1 id="local-gym-forced-me-to-re-their-app">Local gym forced me to RE their app</h1>
-<h2 id="or-how-to-roll-out-your-own-version-of-an-api-client-in-a-few-simple-steps">or: How to roll-out your own version of an API client in a few simple steps</h2>
-<h3 id="beware">BEWARE</h3>
-<h2 id="this-is-an-old-post">This is an old post.</h2>
+    <h1>Local gym forced me to RE their app</h1>
+<h2>or: How to roll-out your own version of an API client in a few simple steps</h2>
+<h3>BEWARE</h3>
+<h2>This is an old post.</h2>
 <p>TLDR; I <em>hacked</em> (wink) my gym's app, so my friend can go with me using his old phone.</p>
 <p>After some convincing I managed to get my friends to sign-up to a local gym with me. One of them unfortunately
 was unable to use their entrance app on his phone (he has Android 5.0, app requires 6.0+). Customer service told
 us that this app is the ONLY way they provide to access the facility. I did not see any technical reason for
 this stupid app, that simply generates QR code via their API, to require him to purchase a newer phone. So I
 decided to write my own so that he can finally train with me.</p>
-<h4 id="disclaimer-this-post-will-be-mostly-about-surface-level-overview-of-how-to-write-your-own"><em>DISCLAIMER</em>: this post will be mostly about surface-level overview of how to write your own</h4>
+<h4><em>DISCLAIMER</em>: this post will be mostly about surface-level overview of how to write your own</h4>
 <p>client for some service
 with a non-documented API. If you are already experienced with it you won't get much out of this read. The
 interesting part is that my client actually has to be tested physically at their location.</p>
 <hr />
-<h2 id="1-how-api-clients-work">1. How API clients "work"</h2>
+<h2>1. How API clients "work"</h2>
 <p>Before we start with anything concrete let's quickly go over how an API is typically consumed. A simplified model
 looks like this:</p>
 <ol>
@@ -82,7 +46,7 @@ resources on how to use them. But for a <em>private</em> API things get a little
 how the API and its requests work by examining the "official" client. And since most of the time when we are
 dealing with <a href="https://en.wikipedia.org/wiki/Proprietary_software">proprietary software</a>, we don't have access to its source code. And so we have to <a href="https://en.wikipedia.org/wiki/Reverse_engineering">reverse engineer</a> it ourselves.</p>
 <hr />
-<h2 id="2-reverse-engineering-for-beginners">2. Reverse engineering for beginners</h2>
+<h2>2. Reverse engineering for beginners</h2>
 <p>With that out of the way, let's start getting into something more concrete. My problem at the start was as
 follows:</p>
 <blockquote>
@@ -110,8 +74,8 @@ as follows:</p>
 </ol>
 <p>Seems simple enough.</p>
 <hr />
-<h2 id="3-reading-code-that-is-not-available-for-reading">3. Reading code that is not available for reading</h2>
-<h3 id="apk-loaded-in-the-software">APK loaded in the software</h3>
+<h2>3. Reading code that is not available for reading</h2>
+<h3>APK loaded in the software</h3>
 <p><img alt="img01" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-01.png" />
 <img alt="img02" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-02.png" /></p>
 <p>Those screens at the beginning look very intimidating. I had zero experience with any Android development. But I
@@ -173,10 +137,10 @@ client. And I did.</p>
    intervals similar to those in the official client, although I think they regenerate the QR a little more
    often for some reason.</li>
 </ol>
-<h3 id="my-horrible-app">My horrible app</h3>
+<h3>My horrible app</h3>
 <p><img alt="img07" src="https://media.githubusercontent.com/media/ktxyz/self/refs/heads/master/docs/_assets/img/2022/re/img-07.png" /></p>
 <hr />
-<h2 id="4-the-physical-test">4. The physical test</h2>
+<h2>4. The physical test</h2>
 <p>And now the most exciting part. I had to go and test it myself at their location. I was pretty nervous but
 hopeful. I packed my usual gym bag and headed out.</p>
 <p>I got into the building and pulled out my app, with a brand new, single-day plan account. I walked up to the
@@ -197,7 +161,7 @@ left my bag a little too close to the capsule's doors I think.</p>
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/stvJvkpCl58?si=pvHJf274nsVukDZZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <hr />
-<h2 id="5-the-point">5. The point</h2>
+<h2>5. The point</h2>
 <p>This tiny project sure was a lot of fun and I even learned a little bit about Android apps. But I was pretty
 much forced to do it. If I didn't create my own client, my friend wouldn't be able to go to the gym with me.
 That's fucked up in my opinion. I understand that we can't support old hardware/software forever. But
@@ -217,5 +181,6 @@ block me. If they gave a damn, they would not have excluded \~8% of Android user
 without a reason.</p>
 <p>I am not a fan of this situation.</p>
 <p>Oh, and they will probably cancel my membership and block me, if they ever find out. Heh.</p>
+    <hr />
 </body>
 </html>

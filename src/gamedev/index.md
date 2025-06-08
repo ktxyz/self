@@ -1,5 +1,2 @@
-[Home](/) | [Tech](/tech) | [Gamedev](/gamedev) | [Fitness](/fitness)
-
----
-
-# SOON
+# Gamedev
+## SOON

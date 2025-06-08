@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Kamil Tokarski - Fitness</title>
+    <title>{{ site_title }}{% if site_title %} - {% endif %}{{ page_title }}</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ktxyz/self/docs/_assets/css/style.css">
     <!-- <link rel="stylesheet" href="/_assets/css/style.css"> -->
 </head>
 <body>
-    <p><a href="/">Home</a> | <a href="/tech">Tech</a> | <a href="/gamedev">Gamedev</a> | <a href="/fitness">Fitness</a></p>
-<hr />
-    <h1>Fitness</h1>
-<h2>SOON</h2>
-    <hr />
+    {{ header | safe }}
+    {{ content | safe }}
+    {{ footer | safe }}
 </body>
 </html>
